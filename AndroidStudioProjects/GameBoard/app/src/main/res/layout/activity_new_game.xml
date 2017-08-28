@@ -1,0 +1,98 @@
+    <!-- form -->
+<ScrollView
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:bootstrapbutton="http://schemas.android.com/apk/res-auto"
+    tools:context=".NewGameActivity" >
+    <LinearLayout
+        android:id="@+id/login_form"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="20dp"
+        android:background="@drawable/card_bg_r4_flat_top"
+        android:orientation="vertical"
+        android:padding="20dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:text="Creating a game"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+<!--
+        <include
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            layout="@layout/item_game" />
+-->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:text="Game:"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+        <Spinner
+            android:id="@+id/game"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:text="Opponent"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+        <ScrollView
+            android:id="@android:id/list"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
+        </ScrollView>
+
+        <!--
+        <ListView
+            android:id="@android:id/list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+        </ListView>
+        -->
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="bottom"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:id="@+id/button_bar"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right" >
+
+                <com.beardedhen.androidbootstrap.BootstrapButton
+                    android:id="@+id/ok"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="Create"
+                    bootstrapbutton:bb_icon_right="fa-floppy-o"
+                    bootstrapbutton:bb_roundedCorners="true"
+                    bootstrapbutton:bb_type="primary" />
+
+                <com.beardedhen.androidbootstrap.BootstrapButton
+                    android:id="@+id/cancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="Cancel"
+                    bootstrapbutton:bb_icon_right="fa-times"
+                    bootstrapbutton:bb_roundedCorners="true"
+                    bootstrapbutton:bb_type="warning" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

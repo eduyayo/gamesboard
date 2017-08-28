@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-3.0.xsd
+     http://www.springframework.org/schema/tx
+     http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+     http://www.springframework.org/schema/aop 
+     http://www.springframework.org/schema/aop/spring-aop-3.0.xsd"
+	default-autowire="byName">
+
+	<!-- MySQL 5.5 database added. Please make note of these credentials: Root 
+		User: admin46YDh2w Root Password: ahcP_lvzpBqX Database Name: hub Connection 
+		URL: mysql://$OPENSHIFT_MYSQL_DB_HOST:$OPENSHIFT_MYSQL_DB_PORT/ You can manage 
+		your new MySQL database by also embedding phpmyadmin. The phpmyadmin username 
+		and password will be the same as the MySQL credentials above. -->
+	<!-- <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" 
+		destroy-method="close"> <property name="driverClassName" value="com.mysql.jdbc.Driver" 
+		/> <property name="url" value="jdbc:mysql//${OPENSHIFT_MYSQL_DB_HOST}:${OPENSHIFT_MYSQL_DB_PORT}/hub" 
+		/> <property name="username" value="admin46YDh2w" /> <property name="password" 
+		value="ahcP_lvzpBqX" /> </bean> -->
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean"><!-- <property name="dataSource" ref="dataSource"></property> -->
+		<property name="dataSource">
+			<bean class="org.springframework.jndi.JndiObjectFactoryBean">
+				<property name="jndiName" value="jdbc/MysqlDS" />
+				<property name="resourceRef" value="true" />
+			</bean>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+			</props>
+		</property>
+		<property name="annotatedClasses">
+			<list>
+				<value>com.pigdroid.hub.model.persistent.User</value>
+				<value>com.pigdroid.hub.model.persistent.Message</value>
+				<value>com.pigdroid.hub.model.persistent.Game</value>
+			</list>
+		</property>
+	</bean>
+
+</beans>

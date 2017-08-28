@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/game_card"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_gravity="start"
+        android:layout_margin="20dp"
+        android:background="@drawable/card_bg_r4"
+        android:orientation="horizontal" android:gravity="center" android:layout_centerHorizontal="true" >
+<LinearLayout android:layout_height="wrap_content" android:layout_width="wrap_content" android:orientation="vertical">
+    <ImageView
+        android:id="@android:id/icon"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="20dp"
+        android:src="@drawable/ic_launcher"  />
+
+    <TextView
+        android:id="@android:id/text1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:text="Games Board"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@android:color/black"/>
+
+</LinearLayout>
+<FrameLayout
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/pigdroid" android:layout_gravity="bottom|right"/>
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@android:id/text1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="by Pigdroid"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@android:color/black"/>
+
+        <TextView
+            android:id="@android:id/text2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="pigdroid.blogspot.com"
+            android:textAppearance="?android:attr/textAppearanceSmall"/>
+    </LinearLayout>
+</FrameLayout>
+
+        <!--
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" android:orientation="vertical">
+
+                <TextView
+                    android:id="@android:id/text2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Players:" />
+                <ListView
+                    android:id="@+id/player_list"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
+
+                </ListView>
+            </LinearLayout>
+            -->
+    </LinearLayout>
+    <!--
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        android:elevation="4dp"/>
+        android:layout_below="@id/toolbar"
+        -->
+
+    <FrameLayout
+        android:id="@+id/frame_container"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+    </FrameLayout>
+</LinearLayout>

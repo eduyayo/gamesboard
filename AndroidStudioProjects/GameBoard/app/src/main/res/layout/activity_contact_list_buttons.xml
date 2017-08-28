@@ -1,0 +1,58 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:bootstrapbutton="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/button_overlay"
+    style="?android:attr/textAppearanceLarge"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="15dp"
+    android:textIsSelectable="true"
+    android:layout_gravity="bottom">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right" android:layout_gravity="bottom" android:layout_alignParentBottom="true">
+
+        <com.beardedhen.androidbootstrap.BootstrapButton
+            android:id="@+id/invite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            bootstrapbutton:bb_icon_left="fa-envelope-o"
+            bootstrapbutton:bb_roundedCorners="true"
+            bootstrapbutton:bb_type="primary"
+            android:text="Share" android:visibility="gone"/>
+
+        <com.beardedhen.androidbootstrap.BootstrapButton
+            android:id="@+id/search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            bootstrapbutton:bb_icon_left="fa-search"
+            bootstrapbutton:bb_roundedCorners="true"
+            bootstrapbutton:bb_type="info"
+            android:text="Search"/>
+
+        <!--
+                        <Button
+                            android:id="@+id/add"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:background="@drawable/transparent_selector"
+                            android:text="Add" />
+        -->
+        <!--
+        <Button
+            android:id="@+id/invite_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="Invite" />
+            -->
+    </LinearLayout>
+
+</RelativeLayout>
+

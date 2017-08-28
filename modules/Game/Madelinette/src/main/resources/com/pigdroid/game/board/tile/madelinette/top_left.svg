@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   viewBox="0 0 100 100"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="top_left.svg">
+  <rect
+  x="0"
+  y="0"
+     width="100"
+     height="100"
+     style="fill:#00c800;stroke-width:1;stroke:none;stroke-opacity:1"
+     id="rect4" />
+  <circle
+     cx="50"
+     cy="50"
+     r="20"
+     stroke="black"
+     stroke-width="3"
+     fill="black"
+     id="circle6" />
+  <line
+     x1="64"
+     y1="64"
+     x2="100"
+     y2="100"
+     style="stroke-width:3;stroke:rgb(0,0,0);stroke-opacity:1"
+     id="line8" />
+  <line
+     x1="50"
+     y1="70"
+     x2="50"
+     y2="100"
+     style="stroke-width:3;stroke:rgb(0,0,0);stroke-opacity:1"
+     id="line10" />
+</svg>

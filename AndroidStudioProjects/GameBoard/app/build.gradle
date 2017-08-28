@@ -1,0 +1,84 @@
+apply plugin: 'com.android.application'
+
+
+android {
+
+    repositories {
+        jcenter()
+        mavenCentral()
+        mavenLocal()
+        maven {
+            url "http://files.couchbase.com/maven2/"
+        }
+    }
+
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
+
+    defaultConfig {
+        applicationId "com.pigdroid.gameboard"
+        minSdkVersion 16
+        targetSdkVersion 22
+        versionCode 28
+        versionName "1.0"
+
+        multiDexEnabled true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+// workaround for "duplicate files during packaging of APK" issue
+// see https://groups.google.com/d/msg/adt-dev/bl5Rc4Szpzg/wC8cylTWuIEJ
+    packagingOptions {
+        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+    }
+
+    dexOptions {
+        jumboMode = true
+    }
+
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    //use aar or wont work!
+    //    compile 'com.gmr:acacia:0.1.0'
+    //game modules
+    compile 'com.android.support:appcompat-v7:22.2.0'
+    compile 'com.android.support:multidex:1.0.0'
+    compile 'com.google.android.gms:play-services:7.5.0'
+    compile 'org.jboss.aerogear:aerogear-android:1.4.0@aar'
+    compile 'com.couchbase.lite:couchbase-lite-android:1.0.3.1@aar'
+    compile 'com.couchbase.lite:couchbase-lite-java-core:1.0.3.1'
+    compile 'com.couchbase.lite:couchbase-lite-java-javascript:1.0.3.1'
+    compile 'com.couchbase.lite:couchbase-lite-java-listener:1.0.3.1'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.github.japgolly.android:svg-android:2.0.6'
+    compile 'com.beardedhen:androidbootstrap:1.2.1'
+    compile 'com.fasterxml.jackson.core:jackson-core:2.6.0-rc1'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.6.0-rc1'
+    compile 'com.nispok:snackbar:2.10.+'
+    compile 'com.google.guava:guava:13.0.1'
+    compile 'com.google.code.gson:gson:2.2.2'
+//    compile 'com.pigdroid.hub:hub-game-model-chess:1.0'
+    compile 'com.pigdroid.hub:hub-game-model-checkers:1.0'
+    compile 'com.pigdroid.hub:hub-game-model-dots:1.0'
+    compile 'com.pigdroid.hub:hub-game-model-connect4:1.0'
+    compile 'com.pigdroid.hub:hub-game-model-madelinette:1.0'
+    compile 'com.pigdroid.hub:hub-game-model-checkers-board-resources:1.0'
+    compile 'com.pigdroid.hub:hub-game-model-checkers-pieces-resources:1.0'
+    compile 'com.pigdroid.hub:hub-message:1.0'
+    compile 'com.android.support:support-v4:22.2.0'
+    compile('com.mikepenz:aboutlibraries:5.0.5@aar') {
+        transitive = true
+    }
+    compile 'net.sf.flexjson:flexjson:3.3'
+    compile 'org.apmem.tools:layouts:1.9@aar'
+
+}

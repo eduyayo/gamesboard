@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fontawesometext="http://schemas.android.com/apk/res-auto"
+    xmlns:bootstrap="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_content"
+    android:layout_width="240dp"
+    android:layout_height="fill_parent"
+    android:layout_gravity="start"
+    android:background="@drawable/greencup_repeating"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/profile"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/card_bg_r4_flat_top"
+        android:gravity="bottom"
+        android:orientation="horizontal"
+        android:padding="10dp" >
+
+        <FrameLayout
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center_vertical">
+
+            <com.beardedhen.androidbootstrap.FontAwesomeText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="64dp"
+                fontawesometext:fa_icon="fa-user" />
+
+            <ImageView
+                android:id="@android:id/icon"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_gravity="center_vertical" android:layout_margin="5dp"/>
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@android:id/text1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="User Name!" android:textColor="@android:color/black"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <TextView
+                android:id="@android:id/text2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="Session provider"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/contacts"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp"
+        android:background="@android:color/background_light"
+        android:gravity="bottom"
+        android:orientation="horizontal"
+        android:padding="10dp" >
+
+        <com.beardedhen.androidbootstrap.FontAwesomeText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            fontawesometext:fa_icon="fa-user" />
+
+        <TextView
+            android:id="@+id/handle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="Buddies" android:textColor="@android:color/black"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/games"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp"
+        android:background="@android:color/background_light"
+        android:gravity="bottom"
+        android:orientation="horizontal"
+        android:padding="10dp" >
+
+        <com.beardedhen.androidbootstrap.FontAwesomeText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            fontawesometext:fa_icon="fa-gamepad" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="Games" android:textColor="@android:color/black"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="bottom"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/about"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/background_light"
+            android:gravity="bottom"
+            android:orientation="horizontal"
+            android:padding="10dp" >
+
+            <com.beardedhen.androidbootstrap.FontAwesomeText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                fontawesometext:fa_icon="fa-users" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="About"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </LinearLayout>
+
+        <LinearLayout
+        android:id="@+id/settings"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/background_light"
+        android:gravity="bottom"
+        android:orientation="horizontal"
+        android:padding="10dp" android:layout_marginTop="5dp">
+
+        <com.beardedhen.androidbootstrap.FontAwesomeText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            fontawesometext:fa_icon="fa-cogs" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="Settings"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

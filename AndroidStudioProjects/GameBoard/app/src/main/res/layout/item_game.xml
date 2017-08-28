@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fontawesometext="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content"
+    android:layout_width="fill_parent"
+    android:layout_gravity="start"
+    android:layout_margin="10dp"
+    android:background="@drawable/card_bg_r4"
+    android:orientation="horizontal" >
+
+    <ImageView
+        android:id="@android:id/icon"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="10dp"
+        android:src="@drawable/ic_launcher" />
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@android:id/text1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="Gamename"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@android:color/black"/>
+
+        <TextView
+            android:id="@android:id/text2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="Status" />
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" android:orientation="vertical" android:layout_marginTop="3dp">
+
+            <TextView
+                android:id="@android:id/text2"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/black"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Players:" />
+
+            <org.apmem.tools.layouts.FlowLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" android:gravity="center|top"
+                android:layout_marginBottom="5dp" android:id="@+id/player_list">
+
+            </org.apmem.tools.layouts.FlowLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+<!--
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" android:orientation="vertical">
+
+        <TextView
+            android:id="@android:id/text2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="Players:" />
+        <ListView
+            android:id="@+id/player_list"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+        </ListView>
+    </LinearLayout>
+    -->
+</LinearLayout>

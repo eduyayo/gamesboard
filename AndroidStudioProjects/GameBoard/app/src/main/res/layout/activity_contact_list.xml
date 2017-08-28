@@ -1,0 +1,45 @@
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bootstrapbutton="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".GameActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/content_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <fragment
+                android:id="@+id/contact_list"
+                android:name="com.pigdroid.gameboard.view.detail.contact.ContactListFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                tools:context=".ContactListActivity"
+                tools:layout="@android:layout/list_content" />
+
+            <include
+                layout="@layout/activity_contact_list_buttons"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+
+        </FrameLayout>
+
+        <ProgressBar
+            android:id="@+id/loading_spinner"
+            style="?android:progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+    </FrameLayout>
+
+    <include layout="@layout/drawer_content" />
+
+</android.support.v4.widget.DrawerLayout>

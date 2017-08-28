@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="64dp" android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/spinnerImages"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_margin="5dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_launcher" />
+
+        <TextView
+            android:id="@+id/spinnerTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="20dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Game name"/>
+    </TableRow>
+
+</TableLayout>

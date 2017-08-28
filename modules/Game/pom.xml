@@ -1,0 +1,76 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.pigdroid.hub</groupId>
+	<artifactId>hub-game</artifactId>
+	<packaging>pom</packaging>
+	<version>1.0</version>
+	<name>hub-game</name>
+	
+	<modules>
+		<module>CheckersBoard</module>
+		<module>CheckersPieces</module>
+		<module>ChessPieces</module>
+		
+		<module>Madelinette</module>
+		
+		<module>ResourcesCache</module>
+		<module>Model</module>
+		
+		<!--
+		<module>Chat</module>
+		-->
+		
+		<module>Checkers</module>
+		
+		<!-- 
+		<module>Chess</module>
+		 -->
+		 
+<!-- 
+		<module>Madelinette</module>
+		<module>MadelinetteResources</module>
+-->
+
+		<module>Dots</module>
+		<module>Connect4</module>
+	</modules>
+<build>
+
+    <pluginManagement>
+	<plugins>
+		
+		      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>2.2.1</version>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+	
+	
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>2.5.1</version>
+        <executions>
+        <execution>
+          <id>custom-install</id>
+          <phase>package</phase>
+		  <goals><goal>install</goal></goals>
+        </execution>
+        </executions>
+        </plugin>
+	
+	</plugins>
+    </pluginManagement>
+
+  </build>
+</project>

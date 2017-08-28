@@ -1,0 +1,68 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:bootstrap="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/game_list">
+
+        <LinearLayout
+            style="?android:attr/textAppearanceLarge"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="5dp"
+            android:textIsSelectable="true" >
+
+            <ListView
+                android:id="@android:id/list"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:footerDividersEnabled="false"
+                android:headerDividersEnabled="false">
+            </ListView>
+
+        </LinearLayout>
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/button_overlay"
+        style="?android:attr/textAppearanceLarge"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="15dp"
+        android:textIsSelectable="true"
+            android:layout_gravity="bottom">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right" android:layout_gravity="bottom" android:layout_alignParentBottom="true">
+
+                <com.beardedhen.androidbootstrap.BootstrapButton
+                    android:id="@+id/add"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="Add"
+                    bootstrap:bb_icon_right="fa-plus-circle"
+                    bootstrap:bb_roundedCorners="true"
+                    bootstrap:bb_size="small"
+                    bootstrap:bb_type="primary" />
+
+                <com.beardedhen.androidbootstrap.BootstrapButton
+                    android:id="@+id/invite_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    bootstrap:bb_icon_right="fa-share-alt"
+                    android:text="Share"
+                    bootstrap:bb_roundedCorners="true"
+                    bootstrap:bb_size="small"
+                    bootstrap:bb_type="info" android:visibility="gone"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+    </FrameLayout>

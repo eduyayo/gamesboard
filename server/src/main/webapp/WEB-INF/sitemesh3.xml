@@ -1,0 +1,4 @@
+<sitemesh>
+<!--  -->
+    <mapping path="/*" decorator="/WEB-INF/layout/layout.jsp"/>
+</sitemesh>

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.pigdroid.gameboard"
+    android:versionCode="8"
+    android:versionName="1.0" >
+    <!--
+    <uses-sdk
+        android:minSdkVersion="16"
+        android:targetSdkVersion="21" />
+    -->
+    <uses-sdk
+        android:minSdkVersion="16"
+        android:targetSdkVersion="21" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+
+    <permission
+        android:name="com.pigdroid.gameboard.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.pigdroid.gameboard" />
+    <uses-permission android:name="com.pigdroid.android.hateaidl" />
+
+    <android:uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
+    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <android:uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
+
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <application
+        android:name=".app.GameBoardApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name="com.google.android.gms.ads.AdActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
+            android:theme="@android:style/Theme.Translucent" />
+        <activity
+            android:name=".view.detail.contact.ContactDetailActivity"
+            android:label="Contact Detail" >
+        </activity>
+        <activity
+            android:name=".view.detail.contact.ContactListActivity"
+            android:label="Contacts" >
+        </activity>
+        <activity
+            android:name=".view.detail.contact.ContactSearchActivity"
+            android:label="Search new Contacts" >
+        </activity>
+        <activity
+            android:name=".view.detail.game.GameDetailActivity"
+            android:label="Game" android:parentActivityName=".view.detail.game.GameListActivity" android:clearTaskOnLaunch="true">
+        </activity>
+        <activity
+            android:name=".view.detail.game.GameListActivity"
+            android:label="Game List" android:parentActivityName=".view.MainActivity">
+        </activity>
+        <activity
+            android:name=".view.MainActivity"
+            android:label="Game Board!" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".NotConnectedActivity"
+            android:excludeFromRecents="true" >
+        </activity>
+        <activity
+            android:name=".TimeoutActivity"
+            android:excludeFromRecents="true" >
+        </activity>
+        <activity
+            android:name=".view.detail.game.GameActivity"
+            android:label="Game" >
+        </activity>
+        <activity
+            android:name=".view.detail.game.NewGameActivity"
+            android:label="New Game" >
+        </activity>
+        <activity
+            android:name=".view.login.RegisterActivity"
+            android:excludeFromRecents="true"
+            android:label="Register" >
+        </activity>
+        <activity
+            android:name=".view.login.LoginActivity"
+            android:excludeFromRecents="true"
+            android:label="Login" >
+        </activity>
+        <activity android:name=".view.AboutActivity"
+            android:excludeFromRecents="true">
+        </activity>
+        <activity android:name="com.pigdroid.gameboard.DisconnectedActivity"
+            android:excludeFromRecents="true"
+            android:label="Oops!">
+        </activity>
+
+
+        <!--
+        <activity
+            android:name="com.pigdroid.gameboard.view.detail.ItemDetailAbstractActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.pigdroid.gameboard.ItemListActivity" />
+        </activity>
+        <service
+            android:name="com.pigdroid.gameboard.app.service.PushServiceImplImpl"
+            android:label="PushServiceImpl"
+            android:permission="android.permission.INTERNET" >
+        </service>
+        -->
+        <service android:name=".app.service.RestServiceImpl" />
+        <service android:name=".app.service.PushServiceImpl" />
+        <service android:name=".app.service.DataServiceImpl" />
+
+        <receiver
+            android:name="org.jboss.aerogear.android.unifiedpush.AeroGearGCMMessageReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
+                <category android:name="com.pigdroid.gameboard" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="org.jboss.aerogear.android.unifiedpush.AeroGearGCMMessageReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
+                <category android:name="com.pigdroid.gameboard" />
+            </intent-filter>
+            <!--
+                        <meta-data
+                            android:name="DEFAULT_MESSAGE_HANDLER_KEY"
+                            android:value="com.pigdroid.gameboard" />
+            -->
+        </receiver>
+        <receiver android:name=".app.service.AutoStartBroadcastReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name=".app.SettingsActivity"
+            android:label="@string/title_activity_settings" >
+        </activity>
+    </application>
+
+</manifest>
