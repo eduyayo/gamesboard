@@ -16,10 +16,8 @@ import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository;
 import org.springframework.social.connect.web.ConnectController;
-import org.springframework.social.facebook.connect.FacebookConnectionFactory;
 import org.springframework.social.google.connect.GoogleConnectionFactory;
 import org.springframework.social.security.AuthenticationNameUserIdSource;
-import org.springframework.social.twitter.connect.TwitterConnectionFactory;
 
 /**
  * @author eduyayo@gmail.com
@@ -30,7 +28,7 @@ public class SocialContext implements SocialConfigurer {
 
     @Autowired
     private DataSource dataSource;
-    
+
 
     /**
      * Configures the connection factories for Facebook and Twitter.
@@ -39,19 +37,19 @@ public class SocialContext implements SocialConfigurer {
      */
     @Override
     public void addConnectionFactories(ConnectionFactoryConfigurer cfConfig, Environment env) {
-        cfConfig.addConnectionFactory(new TwitterConnectionFactory(
-                env.getProperty("twitter.consumer.key"),
-                env.getProperty("twitter.consumer.secret")
-        ));
+//        cfConfig.addConnectionFactory(new TwitterConnectionFactory(
+//                env.getProperty("twitter.consumer.key"),
+//                env.getProperty("twitter.consumer.secret")
+//        ));
         cfConfig.addConnectionFactory(new GoogleConnectionFactory(
                 env.getProperty("twitter.consumer.key"), //TODO !!!!!!!!!!
                 env.getProperty("twitter.consumer.secret") //TODO !!!!!!!!!!
         ));
-        FacebookConnectionFactory facebookFactory = new FacebookConnectionFactory(
-                env.getProperty("facebook.app.id"),
-                env.getProperty("facebook.app.secret"));
-        facebookFactory.setScope("public_profile,email,user_friends");
-		cfConfig.addConnectionFactory(facebookFactory);
+//        FacebookConnectionFactory facebookFactory = new FacebookConnectionFactory(
+//                env.getProperty("facebook.app.id"),
+//                env.getProperty("facebook.app.secret"));
+//        facebookFactory.setScope("public_profile,email,user_friends");
+//		cfConfig.addConnectionFactory(facebookFactory);
     }
 
     /**

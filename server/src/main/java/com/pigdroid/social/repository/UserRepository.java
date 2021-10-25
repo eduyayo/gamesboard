@@ -6,6 +6,7 @@ import java.util.Set;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import com.pigdroid.hub.model.persistent.Usr;
 import com.pigdroid.social.model.user.User;
@@ -13,7 +14,8 @@ import com.pigdroid.social.model.user.User;
 /**
  * @author eduyayo@gmail.com
  */
-public interface UserRepository extends JpaRepository<User, Long>, UserRepositoryCustom {
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
 
     public User findByEmail(String email);
 
@@ -21,5 +23,7 @@ public interface UserRepository extends JpaRepository<User, Long>, UserRepositor
     Page<User> findByEmailLikeAndUsrIsNotIn(String email, Set<Usr> notIn, Pageable pageable);
 
 	public List<User> findByEmailIn(List<String> toEmails);
-    
+
+	public User searchUserByEmail(String email);
+
 }

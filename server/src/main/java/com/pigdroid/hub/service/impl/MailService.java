@@ -11,10 +11,10 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 public class MailService {
-	
+
 //TODO inject this as a service
 //TODO inject the user service, generate a new password and send the email
-	
+
 	public void send(String toEmail) {
 
 		final String username = "pigdroid@gmail.com";
@@ -28,6 +28,7 @@ public class MailService {
 
 		Session session = Session.getInstance(props,
 				new javax.mail.Authenticator() {
+					@Override
 					protected PasswordAuthentication getPasswordAuthentication() {
 						return new PasswordAuthentication(username, password);
 					}

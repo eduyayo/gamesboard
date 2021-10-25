@@ -12,7 +12,9 @@ import org.springframework.context.support.ResourceBundleMessageSource;
  * @author eduyayo@gmail.com
  */
 @Configuration
-@Import({/*SecurityContext.class*/ /*RestSecurityContext.class, */RestLoginSecurityContext.class, PersistenceContext.class, SocialContext.class, WebAppContext.class})
+@Import({/*SecurityContext.class*/ /*RestSecurityContext.class, */
+//	RestLoginSecurityContext.class,
+	PersistenceContext.class, SocialContext.class /*, WebAppContext.class*/})
 @PropertySource("classpath:application.properties")
 public class ApplicationContext {
 

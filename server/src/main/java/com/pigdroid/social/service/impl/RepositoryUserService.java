@@ -133,7 +133,7 @@ public class RepositoryUserService implements UserService {
 	@Override
 	public List<User> search(String email, String sessionEmail) {
 		Pageable pageRequest = Pageable.ofSize(10);
-		User session = userRepository.searchUserByEmailWithCollections(sessionEmail);
+		User session = userRepository.searchUserByEmail(sessionEmail);
 		Set<Usr> notIn = new HashSet<Usr>(session.getUsr().getContacts());
 		notIn.add(session.getUsr());
 		Page<User> page = null;
