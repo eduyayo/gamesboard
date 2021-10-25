@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import junit.framework.Assert;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,6 +20,8 @@ import com.pigdroid.game.model.Player;
 import com.pigdroid.game.model.UIGameContext;
 import com.pigdroid.game.turn.controller.TurnGameController.TurnGameControllerListener;
 
+import junit.framework.Assert;
+
 public class CheckersControllerByMessagesTest {
 
 	private CheckersController controllerPigdroid;
@@ -34,13 +34,8 @@ public class CheckersControllerByMessagesTest {
 	private boolean gameEndedEduyayo = false;
 	private boolean gameStartedPigdroid = false;
 	private boolean gameStartedEduyayo = false;
-	private boolean turnEndedPigdroid = false;
-	private boolean turnEndedEduyayo = false;
 	private boolean eduyayoWinner = false;
 	private boolean pigdroidWinner = false;
-	private boolean pigdroidNeverReady = false;
-	private boolean eduyayoNeverReady = false;
-
 	@Before
 	public void setup() {
 		controllerPigdroid = new CheckersController();
@@ -51,8 +46,6 @@ public class CheckersControllerByMessagesTest {
 		gameEndedEduyayo = false;
 		gameStartedPigdroid = false;
 		gameStartedEduyayo = false;
-		turnEndedPigdroid = false;
-		turnEndedEduyayo = false;
 	}
 
 	@Test
@@ -61,36 +54,42 @@ public class CheckersControllerByMessagesTest {
 			InvocationTargetException, NoSuchMethodException {
 
 		the1000moves();
-		
+
 	}
 
 	private void the1000moves() {
 		controllerPigdroid.setGameControllerListener(new GameControllerListener() {
 
+			@Override
 			public void onPlayerJoined(Player invited) {
 				controllerEduyayo.joinPlayer(((HumanPlayer) invited).getEmail());
 			}
 
+			@Override
 			public void onPlayerLeft(Player found) {
-				controllerEduyayo.leavePlayer(((HumanPlayer) found).getEmail());			
+				controllerEduyayo.leavePlayer(((HumanPlayer) found).getEmail());
 			}
 
+			@Override
 			public void onMove(List<GameSelection> selections) {
 				// TODO Auto-generated method stub
-				
+
 			}
 
+			@Override
 			public void onStartGame() {
 				gameStartedPigdroid = true;
 			}
 
+			@Override
 			public void onSendSelections(List<GameSelection> selectionsCopy) {
 				System.out.println("controllerPigdroid sends data." + selectionsCopy.toString());
 				Assert.assertTrue(selectionsCopy.size() > 1);
 				controllerEduyayo.select(selectionsCopy.toArray(new GameSelection[selectionsCopy.size()]));
-				
+
 			}
-			
+
+			@Override
 			public boolean onIsPlayerLocal(List<GameSelection> moved) {
 				if (moved != null && !moved.isEmpty()) {
 					return onIsPlayerLocal(moved.get(0).getPlayerName());
@@ -98,63 +97,75 @@ public class CheckersControllerByMessagesTest {
 				return false;
 			}
 
+			@Override
 			public boolean onIsPlayerLocal(String email) {
 				return "pigdroid@gmail.com".equals(email);
 			}
 
+			@Override
 			public void onEndGame(Player currentPlayer, boolean winner, boolean loser, boolean tie) {
 				gameEndedPigdroid = true;
 				pigdroidWinner = winner && "pigdroid".equals(currentPlayer.getName());
 			}
 
+			@Override
 			public void onNeverReadyToStart() {
 				// TODO Auto-generated method stub
-				
+
 			}
 
+			@Override
 			public void onSelect(List<GameSelection> selections) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
 		controllerPigdroid.setTurnGameControllerListener(new TurnGameControllerListener() {
 
+			@Override
 			public void onStartTurn(Player player) {
 				System.out.println("controllerPigdroid:: Starts turn for " + player.getName());
 			}
 
+			@Override
 			public void onEndTurn(Player player) {
 				System.out.println("controllerPigdroid:: ENDS turn for " + player.getName());
-				
+
 			}
 		});
-		
+
 		controllerEduyayo.setGameControllerListener(new GameControllerListener() {
 
+			@Override
 			public void onPlayerJoined(Player invited) {
 				controllerPigdroid.joinPlayer(((HumanPlayer) invited).getEmail());
 			}
 
+			@Override
 			public void onPlayerLeft(Player found) {
-				controllerPigdroid.leavePlayer(((HumanPlayer) found).getEmail());			
+				controllerPigdroid.leavePlayer(((HumanPlayer) found).getEmail());
 			}
 
+			@Override
 			public void onMove(List<GameSelection> selections) {
 
-				selections = null;				
+				selections = null;
 			}
 
+			@Override
 			public void onStartGame() {
 				gameStartedEduyayo = true;
-				
+
 			}
 
+			@Override
 			public void onSendSelections(List<GameSelection> selectionsCopy) {
 				System.out.println("controllerEduyayo sends data." + selectionsCopy.toString());
 				Assert.assertTrue(selectionsCopy.size() > 1);
 				controllerPigdroid.select(selectionsCopy.toArray(new GameSelection[selectionsCopy.size()]));
 			}
 
+			@Override
 			public boolean onIsPlayerLocal(List<GameSelection> moved) {
 				if (moved != null && !moved.isEmpty()) {
 					return onIsPlayerLocal(moved.get(0).getPlayerName());
@@ -162,51 +173,59 @@ public class CheckersControllerByMessagesTest {
 				return false;
 			}
 
+			@Override
 			public boolean onIsPlayerLocal(String email) {
 				return "eduyayo@gmail.com".equals(email);
 			}
 
+			@Override
 			public void onEndGame(Player currentPlayer, boolean winner, boolean loser, boolean tie) {
 				gameEndedEduyayo = true;
 				eduyayoWinner = winner && "eduyayo".equals(currentPlayer.getName());
-				
+
 			}
 
+			@Override
 			public void onNeverReadyToStart() {
 				// TODO Auto-generated method stub
-				
+
 			}
 
+			@Override
 			public void onSelect(List<GameSelection> selections) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
 		controllerEduyayo.setTurnGameControllerListener(new TurnGameControllerListener() {
 
+			@Override
 			public void onStartTurn(Player player) {
 				System.out.println("controllerEduyayo:: Starts turn for " + player.getName());
-				
+
 			}
 
+			@Override
 			public void onEndTurn(Player player) {
 				System.out.println("controllerEduyayo:: ENDS turn for " + player.getName());
-				
+
 			}
 		});
 
 		controllerPigdroid.setGameUIControllerListener(new GameUIControllerListener() {
 
 
+			@Override
 			public void onGamePaint(UIGameContext graphicContext) {
 				System.out.println("controllerPigdroid drawing");
 				pigdroidUIGameContext = (UIBoardGameContext) graphicContext;
 				paint(graphicContext);
 			}
-			
+
 		});
 		controllerEduyayo.setGameUIControllerListener(new GameUIControllerListener() {
 
+			@Override
 			public void onGamePaint(UIGameContext graphicContext) {
 				System.out.println("controllerEduyayo drawing");
 				eduyayoUIGameContext = (UIBoardGameContext) graphicContext;
@@ -216,7 +235,7 @@ public class CheckersControllerByMessagesTest {
 
 		HumanPlayer eduyayo = new HumanPlayer("eduyayo", "eduyayo@gmail.com");
 		HumanPlayer pigdroid = new HumanPlayer("pigdroid", "pigdroid@gmail.com");
-		
+
 		controllerEduyayo.newGame();
 
 		controllerEduyayo.addPlayer(eduyayo);
@@ -224,7 +243,7 @@ public class CheckersControllerByMessagesTest {
 		controllerPigdroid.loadModelFromSerialized(controllerEduyayo.getSerializedModel());
 
 		Assert.assertNotNull(controllerPigdroid.getInvitedPlayer());
-		
+
 		controllerEduyayo.joinPlayer("eduyayo@gmail.com");
 		Assert.assertNotNull(controllerPigdroid.getInvitedPlayer());
 		controllerEduyayo.joinPlayer("pigdroid@gmail.com");
@@ -235,7 +254,7 @@ public class CheckersControllerByMessagesTest {
 		Assert.assertTrue(gameStartedPigdroid);
 
 		Assert.assertEquals("eduyayo", controllerPigdroid.getCurrentPlayerName());
-		
+
 		Assert.assertTrue(controllerPigdroid.getSelectables().isEmpty());
 		Assert.assertFalse(controllerEduyayo.getSelectables().isEmpty());
 
@@ -256,7 +275,7 @@ public class CheckersControllerByMessagesTest {
 						try {
 							selection = currentContext.getSelectables().entrySet().iterator().next().getValue();
 						} catch (Exception e) {
-							
+
 						}
 					}
 				} else {
@@ -276,9 +295,9 @@ public class CheckersControllerByMessagesTest {
 				System.out.println(selection);
 				currentController.select(selection);
 				if (currentController == controllerEduyayo) {
-					currentContext = (UIBoardGameContext) eduyayoUIGameContext;
+					currentContext = eduyayoUIGameContext;
 				} else {
-					currentContext = (UIBoardGameContext) pigdroidUIGameContext;
+					currentContext = pigdroidUIGameContext;
 				}
 				previousSelections.add(selection);
 			}
@@ -286,17 +305,17 @@ public class CheckersControllerByMessagesTest {
 			currentController.commit();
 			if (currentController == controllerEduyayo) {
 				currentController = controllerPigdroid;
-				currentContext = (UIBoardGameContext) pigdroidUIGameContext;
+				currentContext = pigdroidUIGameContext;
 			} else {
 				currentController = controllerEduyayo;
-				currentContext = (UIBoardGameContext) eduyayoUIGameContext;
+				currentContext = eduyayoUIGameContext;
 			}
 			if (i > 999) {
 				break;
 			}
 		}
 	}
-	
+
 
 	@Test
 	public void testEndGame() throws NoSuchFieldException, SecurityException,
@@ -304,23 +323,23 @@ public class CheckersControllerByMessagesTest {
 			InvocationTargetException, NoSuchMethodException {
 
 		the1000moves();
-		
+
 //		controllerEduyayo.select(controllerEduyayo.getSelectables().get(key(6, 1)));
 //		controllerEduyayo.select(controllerEduyayo.getSelectables().get(key(7, 2)));
 //		controllerEduyayo.commit();
-//		
+//
 //		controllerPigdroid.select(controllerPigdroid.getSelectables().entrySet().iterator().next().getValue());
 //		controllerPigdroid.select(controllerPigdroid.getSelectables().entrySet().iterator().next().getValue());
 //		controllerPigdroid.commit();
-//		
+//
 //		controllerEduyayo.select(controllerEduyayo.getSelectables().get(key(7, 2)));
 //		controllerEduyayo.select(controllerEduyayo.getSelectables().get(key(6, 3)));
 //		controllerEduyayo.commit();
-//		
+//
 //		controllerPigdroid.select(controllerPigdroid.getSelectables().entrySet().iterator().next().getValue());
 //		controllerPigdroid.select(controllerPigdroid.getSelectables().entrySet().iterator().next().getValue());
 //		controllerPigdroid.commit();
-//		
+//
 //		controllerEduyayo.select(controllerEduyayo.getSelectables().get(key(6, 3)));
 //		controllerEduyayo.select(controllerEduyayo.getSelectables().get(key(7, 4)));
 //		controllerEduyayo.commit();
@@ -328,7 +347,7 @@ public class CheckersControllerByMessagesTest {
 //		controllerPigdroid.select(controllerPigdroid.getSelectables().entrySet().iterator().next().getValue());
 //		controllerPigdroid.select(controllerPigdroid.getSelectables().entrySet().iterator().next().getValue());
 //		controllerPigdroid.commit();
-//		
+//
 //		controllerEduyayo.select(controllerEduyayo.getSelectables().get(key(7, 4)));
 //		controllerEduyayo.select(controllerEduyayo.getSelectables().get(key(6, 5)));
 //		controllerEduyayo.commit();
@@ -342,12 +361,8 @@ public class CheckersControllerByMessagesTest {
 		Assert.assertFalse(pigdroidWinner);
 		Assert.assertTrue(eduyayoWinner);
 	}
-	
-	private int key(int x, int y) {
-		return x + y * 8 + 8*8;
-	}
 
-	
+
 //	@Test
 //	public void testReject() {
 //
@@ -358,12 +373,12 @@ public class CheckersControllerByMessagesTest {
 //			}
 //
 //			public void onPlayerLeft(Player found) {
-//				controllerEduyayo.leavePlayer(((HumanPlayer) found).getEmail());			
+//				controllerEduyayo.leavePlayer(((HumanPlayer) found).getEmail());
 //			}
 //
 //			public void onMove(List<GameSelection> selections) {
 //				// TODO Auto-generated method stub
-//				
+//
 //			}
 //
 //			public void onStartGame() {
@@ -375,7 +390,7 @@ public class CheckersControllerByMessagesTest {
 //				Assert.assertTrue(selectionsCopy.size() > 1);
 //				controllerEduyayo.select(selectionsCopy.toArray(new GameSelection[selectionsCopy.size()]));
 //			}
-//			
+//
 //			public boolean onIsPlayerLocal(List<GameSelection> moved) {
 //				if (moved != null && !moved.isEmpty()) {
 //					return onIsPlayerLocal(moved.get(0).getPlayerName());
@@ -394,12 +409,12 @@ public class CheckersControllerByMessagesTest {
 //
 //			public void onNeverReadyToStart() {
 //				pigdroidNeverReady = true;
-//				
+//
 //			}
 //
 //			public void onSelect(List<GameSelection> selections) {
 //				// TODO Auto-generated method stub
-//				
+//
 //			}
 //		});
 //		controllerPigdroid.setTurnGameControllerListener(new TurnGameControllerListener() {
@@ -410,10 +425,10 @@ public class CheckersControllerByMessagesTest {
 //
 //			public void onEndTurn(Player player) {
 //				System.out.println("controllerPigdroid:: ENDS turn for " + player.getName());
-//				
+//
 //			}
 //		});
-//		
+//
 //		controllerEduyayo.setGameControllerListener(new GameControllerListener() {
 //
 //			public void onPlayerJoined(Player invited) {
@@ -421,17 +436,17 @@ public class CheckersControllerByMessagesTest {
 //			}
 //
 //			public void onPlayerLeft(Player found) {
-//				controllerPigdroid.leavePlayer(((HumanPlayer) found).getEmail());			
+//				controllerPigdroid.leavePlayer(((HumanPlayer) found).getEmail());
 //			}
 //
 //			public void onMove(List<GameSelection> selections) {
 //				// TODO Auto-generated method stub
-//				
+//
 //			}
 //
 //			public void onStartGame() {
 //				gameStartedEduyayo = true;
-//				
+//
 //			}
 //
 //			public void onSendSelections(List<GameSelection> selectionsCopy) {
@@ -454,29 +469,29 @@ public class CheckersControllerByMessagesTest {
 //			public void onEndGame(Player currentPlayer, boolean winner, boolean loser, boolean tie) {
 //				gameEndedEduyayo = true;
 //				eduyayoWinner = winner && "eduyayo".equals(currentPlayer.getName());
-//				
+//
 //			}
 //
 //			public void onNeverReadyToStart() {
 //				eduyayoNeverReady = true;
-//				
+//
 //			}
 //
 //			public void onSelect(List<GameSelection> selections) {
 //				// TODO Auto-generated method stub
-//				
+//
 //			}
 //		});
 //		controllerEduyayo.setTurnGameControllerListener(new TurnGameControllerListener() {
 //
 //			public void onStartTurn(Player player) {
 //				System.out.println("controllerEduyayo:: Starts turn for " + player.getName());
-//				
+//
 //			}
 //
 //			public void onEndTurn(Player player) {
 //				System.out.println("controllerEduyayo:: ENDS turn for " + player.getName());
-//				
+//
 //			}
 //		});
 //
@@ -488,7 +503,7 @@ public class CheckersControllerByMessagesTest {
 //				pigdroidUIGameContext = (UIBoardGameContext) graphicContext;
 //				paint(graphicContext);
 //			}
-//			
+//
 //		});
 //		controllerEduyayo.setGameUIControllerListener(new GameUIControllerListener() {
 //
@@ -501,7 +516,7 @@ public class CheckersControllerByMessagesTest {
 //
 //		HumanPlayer eduyayo = new HumanPlayer("eduyayo", "eduyayo@gmail.com");
 //		HumanPlayer pigdroid = new HumanPlayer("pigdroid", "pigdroid@gmail.com");
-//		
+//
 //		controllerEduyayo.newGame();
 //
 //		controllerEduyayo.addPlayer(eduyayo);
@@ -509,7 +524,7 @@ public class CheckersControllerByMessagesTest {
 //		controllerPigdroid.loadModelFromSerialized(controllerEduyayo.getSerializedModel());
 //
 //		Assert.assertNotNull(controllerPigdroid.getInvitedPlayer());
-//		
+//
 //		controllerEduyayo.joinPlayer("eduyayo@gmail.com");
 //		Assert.assertNotNull(controllerPigdroid.getInvitedPlayer());
 //		controllerEduyayo.leavePlayer("pigdroid@gmail.com");
@@ -517,7 +532,7 @@ public class CheckersControllerByMessagesTest {
 //		Assert.assertTrue(pigdroidNeverReady);
 //		Assert.assertTrue(eduyayoNeverReady);
 //	}
-	
+
 	private void paint(UIGameContext graphicContext) {
 		for (int y = 0; y < 8; y++) {
 			for (int x = 0; x < 8; x++) {
@@ -545,5 +560,5 @@ public class CheckersControllerByMessagesTest {
 		System.out.println();
 		System.out.println();
 	}
-	
+
 }

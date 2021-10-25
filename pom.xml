@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.pigdroid.hub</groupId>
@@ -7,17 +8,21 @@
 	<version>1.0</version>
 	<name>hub</name>
 
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.5.5</version>
+		<relativePath />
+	</parent>
+
 	<modules>
 		<module>modules</module>
 	</modules>
-	
+
 	<properties>
+		<java.version>11</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>1.7</maven.compiler.source>
-		<maven.compiler.target>1.7</maven.compiler.target>
 		<junit.version>4.8.2</junit.version>
-		<javax.servlet.version>3.0.1</javax.servlet.version>
-		<tomcat.version>7.0.47</tomcat.version>
 		<maven.downloadJavadocs>true</maven.downloadJavadocs>
 	</properties>
 </project>

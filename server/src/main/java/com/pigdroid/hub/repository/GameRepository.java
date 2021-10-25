@@ -9,4 +9,7 @@ import com.pigdroid.hub.model.persistent.Game;
  */
 public interface GameRepository extends JpaRepository<Game, Long> {
 
+	@Override
+	public boolean existsById(Long id);
+
 }

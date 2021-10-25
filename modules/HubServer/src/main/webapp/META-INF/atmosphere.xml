@@ -1,6 +1,0 @@
-
-<atmosphere-handlers>
-	<atmosphere-handler context-root="/msg/socket" 
-		class-name="com.pigdroid.hub.web.atmosphere.handler.HubAtmosphereHandler">
-	</atmosphere-handler>
-</atmosphere-handlers>

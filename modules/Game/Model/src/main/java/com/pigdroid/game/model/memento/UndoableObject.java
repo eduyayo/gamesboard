@@ -4,59 +4,78 @@ import java.io.Serializable;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-import flexjson.JSONDeserializer;
-import flexjson.JSONSerializer;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
 
 public class UndoableObject implements Serializable {
-	
+
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	private Deque<Memento> mementos = new ArrayDeque<Memento>(); 
-	
+
+	@JsonIgnore
+	private Deque<Memento> mementos = new ArrayDeque<Memento>();
+
+	@JsonIgnore
 	public Memento memento() {
 		Memento ret = null;
-		JSONSerializer serializer = createSerializer();
+		ObjectMapper serializer = createSerializer();
 		ret = new Memento();
-		ret.setData(serializer.deepSerialize(this));
+		try {
+			ret.setData(serializer.writeValueAsString(this));
+		} catch (JsonProcessingException e) {
+			throw new RuntimeException(e);
+		}
 		return ret;
 	}
 
-	protected JSONSerializer createSerializer() {
-		return new JSONSerializer().exclude("memento", "mementos");
+	protected ObjectMapper createSerializer() {
+		ObjectMapper ret = new ObjectMapper();
+		return ret.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 	}
 
 	public void from(Memento memento) {
-		JSONDeserializer<UndoableObject> deserializer = new JSONDeserializer<UndoableObject>();
-		deserializer.deserializeInto(Memento.EMPTY.getData(), this);
+		ObjectMapper mapper = createSerializer();
+		ObjectReader reader = mapper.readerForUpdating(this);
+		try {
+			reader.readValue(Memento.EMPTY.getData());
+		} catch (JsonProcessingException e) {
+			throw new RuntimeException(e);
+		}
 		if (memento != null) {
-			deserializer.deserializeInto(memento.getData(), this);
+			try {
+				reader.readValue(memento.getData());
+			} catch (JsonProcessingException e) {
+				throw new RuntimeException(e);
+			}
 		}
 	}
 
 	public void checkpoint() {
 		mementos.push(memento());
 	}
-	
+
 	public boolean rollback() {
 		boolean ret = false;
 		if (!mementos.isEmpty()) {
 			from(mementos.pop());
-			ret  = true;
+			ret = true;
 		}
 		return ret;
 	}
-	
+
 	public void commit() {
 		mementos.clear();
 	}
-	
+
 	public void from(UndoableObject from) {
 		this.from(from.memento());
 	}
-	
+
 	public UndoableObject copy() {
 		UndoableObject ret = null;
 		try {

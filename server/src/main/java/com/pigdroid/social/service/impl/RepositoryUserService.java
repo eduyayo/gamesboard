@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -43,7 +42,7 @@ public class RepositoryUserService implements UserService {
 
     @Autowired
     private UserRepository userRepository;
-    
+
     @Autowired
     private UsrRepository usrRepository;
 
@@ -78,7 +77,7 @@ public class RepositoryUserService implements UserService {
         }
 
         User registered = user.build();
-        
+
         //eduyayo
         Usr usr = new Usr();
         registered.setUsr(usr);
@@ -120,7 +119,7 @@ public class RepositoryUserService implements UserService {
 			user = userRepository.findByEmail(userForm.getEmail());
 			String lastToken = user.getUsr().getDeviceToken();
 			if (!userForm.getDeviceToken().equals(lastToken)) {
-				HubMessage newMsg = 
+				HubMessage newMsg =
 						HubMessage.builder().to(user.getEmail())
 						.type(HubMessage.TYPE_MSG_DISCONNECT).build();
 				messageService.sendMessage(newMsg);
@@ -133,7 +132,7 @@ public class RepositoryUserService implements UserService {
 
 	@Override
 	public List<User> search(String email, String sessionEmail) {
-		Pageable pageRequest = new PageRequest(0, 10);
+		Pageable pageRequest = Pageable.ofSize(10);
 		User session = userRepository.searchUserByEmailWithCollections(sessionEmail);
 		Set<Usr> notIn = new HashSet<Usr>(session.getUsr().getContacts());
 		notIn.add(session.getUsr());
@@ -158,7 +157,7 @@ public class RepositoryUserService implements UserService {
 		HubMessage newMsg;
 		try {
 			newMsg = new HubMessage(
-					HubMessage.TYPE_ADD_CONTACT, 
+					HubMessage.TYPE_ADD_CONTACT,
 					mapper.writeValueAsString(
 							UserClientProfile.builder().reverseAccepted(true)
 							.accepted(contact.getUsr().getInverseContacts()
@@ -205,5 +204,5 @@ public class RepositoryUserService implements UserService {
 	public User findByEmail(String from) {
 		return userRepository.findByEmail(from);
 	}
-	
+
 }

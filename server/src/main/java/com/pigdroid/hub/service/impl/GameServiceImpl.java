@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
@@ -14,7 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pigdroid.game.GameControllerProvider;
 import com.pigdroid.game.controller.GameController;
@@ -37,27 +42,24 @@ import com.pigdroid.hub.web.rest.dto.GameProfile;
 import com.pigdroid.social.model.user.User;
 import com.pigdroid.social.service.UserService;
 
-import flexjson.JSONDeserializer;
-import flexjson.JSONSerializer;
-
 @Service
 @Transactional
 public class GameServiceImpl extends BaseServiceImpl<Game> implements GameService {
-	
+
 	private static final Log LOG = LogFactory.getLog(GameServiceImpl.class);
 
 	@Autowired
 	private MessageService messageService;
-	
+
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private GameRepository gameRepository;
-	
+
 	@Autowired
 	private GameStatisticsRepository gameStatisticsRepository;
-	
+
 	@Override
 	public void handleMessage(HubMessage hubMessage) {
 		ObjectMapper mapper = new ObjectMapper();
@@ -71,26 +73,32 @@ public class GameServiceImpl extends BaseServiceImpl<Game> implements GameServic
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		
-		Game game = gameRepository.findOne(Long.valueOf(message.getModelId()));
+
+		Optional<Game> optionalGame = gameRepository.findById(Long.valueOf(message.getModelId()));
+		Game game = optionalGame.get();
 		GameController<?> gameController = GameControllerProvider.createController(game.getGameName());
 		gameController.loadModelFromSerialized(game.getSaveGame());
 		doGameMsg(gameController, message, hubMessage, game);
-		
+
 //		//game, here, just changed estate
 //		game.setSaveGame(gameController.getSerializedModel());
 //		gameRepository.save(game);
-		
+
 		//Message here may have a redirection for the other users to update their games:
 		if (!hubMessage.getTo().isEmpty()) {
 			messageService.sendMessage(hubMessage);
 		}
 	}
 
+	protected ObjectMapper createSerializer() {
+		ObjectMapper ret = new ObjectMapper();
+		return ret.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+	}
+
 	private void doGameMsg(
-			final GameController<?> controller, 
-			final GameMessage gameMessage, 
-			final HubMessage hubMessage, 
+			final GameController<?> controller,
+			final GameMessage gameMessage,
+			final HubMessage hubMessage,
 			final Game game) {
 		final String from = hubMessage.getFrom();
 		hubMessage.clearTo();
@@ -106,22 +114,27 @@ public class GameServiceImpl extends BaseServiceImpl<Game> implements GameServic
 						}
 					}
 				}
-				hubMessage.setPayload(new JSONSerializer().serialize(gameMessage));
+				try {
+					hubMessage.setPayload(createSerializer().writeValueAsString(gameMessage));
+				} catch (JsonProcessingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-			
+
 			@Override
 			public boolean onIsPlayerLocal(List<GameSelection> moved) {
 				return true; //TODO All users are local to the server? maybe filter out those not in the "from"?
 			}
-			
+
 			@Override
 			public void onEndGame(Player currentPlayer, boolean winner, boolean loser, boolean tie) {
 				super.onEndGame(currentPlayer, winner, loser, tie);
 				doStatisicsEndGame(
-						(HumanPlayer) currentPlayer, 
-						winner, 
-						loser, 
-						tie, 
+						(HumanPlayer) currentPlayer,
+						winner,
+						loser,
+						tie,
 						game.getId());
 				Iterator<Player> it = controller.getPlayers();
 				while (it.hasNext()) {
@@ -139,15 +152,26 @@ public class GameServiceImpl extends BaseServiceImpl<Game> implements GameServic
 				}
 			}
 
-			
-		});
-		
-		List<GameSelection> gameSelections = 
-				new JSONDeserializer<List<GameSelection>>().deserialize(
-						gameMessage.getPayload());
-		controller.select(gameSelections.toArray(new GameSelection[gameSelections.size()]));
 
-		if (gameRepository.exists(game.getId()) 
+		});
+
+		List<GameSelection> gameSelections;
+		try {
+			gameSelections = createSerializer().readValue(gameMessage.getPayload(), new TypeReference<List<GameSelection>>() {
+			});
+			controller.select(gameSelections.toArray(new GameSelection[gameSelections.size()]));
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		if (gameRepository.existsById(game.getId())
 				&& !GameEstateEnum.FINISHED.equals(game.getEstate())
 						&& !GameEstateEnum.INVALID.equals(game.getEstate())) {
 			gameRepository.save(game);
@@ -159,8 +183,8 @@ public class GameServiceImpl extends BaseServiceImpl<Game> implements GameServic
 			usr.getGames().remove(game);
 		}
 		game.getUsers().clear();
-		gameRepository.delete(game.getId());
-		
+		gameRepository.deleteById(game.getId());
+
 	}
 
 	@Override
@@ -182,7 +206,7 @@ public class GameServiceImpl extends BaseServiceImpl<Game> implements GameServic
 			users.add(user.getUsr());
 		}
 		processNextInvitation(game, gameController);
-		GameProfile.Builder builder = 
+		GameProfile.Builder builder =
 				GameProfile.builder().gameName(game.getGameName())
 					.modelId(game.getId()).saveGame(game.getSaveGame());
 		for (Iterator <Player> it = gameController.getPlayers(); it.hasNext(); ) {
@@ -194,7 +218,7 @@ public class GameServiceImpl extends BaseServiceImpl<Game> implements GameServic
 //			if (PlayerStatusEnum.PRESENT.equals(player.getStatus())) {
 //				sendAddPlayerMessage()
 //				builder.player().email(player.getEmail()).status(player.getStatus().toString());
-//			} 
+//			}
 //		}
 		return builder.gameEstate(game.getEstate()).build();
 	}
@@ -202,14 +226,14 @@ public class GameServiceImpl extends BaseServiceImpl<Game> implements GameServic
 	private void processNextInvitation(final Game game, final GameController<?> gameController) {
 		final HumanPlayer player = (HumanPlayer) gameController.getInvitedPlayer();
 		if (player != null) {
-			GameProfile.Builder builder = 
+			GameProfile.Builder builder =
 					GameProfile.builder().gameName(game.getGameName())
 						.modelId(game.getId()).saveGame(game.getSaveGame()).gameEstate(game.getEstate());
 			for (Iterator <Player> it = gameController.getPlayers(); it.hasNext(); ) {
 				HumanPlayer p = (HumanPlayer) it.next();
 				builder.player().email(player.getEmail()).status(p.getStatus().toString());
 			}
-			
+
 			HubMessage message;
 			try {
 				message = HubMessage.builder().to(player.getEmail()).type(HubMessage.TYPE_ADD_GAME).payload(
@@ -225,13 +249,14 @@ public class GameServiceImpl extends BaseServiceImpl<Game> implements GameServic
 		gameRepository.save(game);
 	}
 
+	@Override
 	public List<GameProfile> list(String sessionEmail) {
 		User sessionUser = userService.findByEmail(sessionEmail);
 		List<GameProfile> ret = new ArrayList<GameProfile>();
 		for (Game game : sessionUser.getUsr().getGames()) {
 			GameController<?> gameController = GameControllerProvider.createController(game.getGameName());
 			gameController.loadModelFromSerialized(game.getSaveGame());
-			GameProfile.Builder builder = 
+			GameProfile.Builder builder =
 					GameProfile.builder().gameName(game.getGameName())
 						.modelId(game.getId()).saveGame(game.getSaveGame()).gameEstate(game.getEstate());
 			for (Iterator <Player> it = gameController.getPlayers(); it.hasNext(); ) {
@@ -245,12 +270,15 @@ public class GameServiceImpl extends BaseServiceImpl<Game> implements GameServic
 
 	@Override
 	public Game joinGame(final String sessionEmail, final String id) {
-		final Game game = gameRepository.findOne(Long.valueOf(id));
-		if (game != null) {
+		Optional<Game> optionalGame = gameRepository.findById(Long.valueOf(id));
+		Game game = null;
+		if (optionalGame.isPresent()) {
+			game = optionalGame.get();
+			Game finalGame = game;
 			final GameController<?> gameController = GameControllerProvider.createController(game.getGameName());
 			gameController.loadModelFromSerialized(game.getSaveGame());
 			gameController.setGameControllerListener(new GameControllerListenerAdapter() {
-				
+
 				@Override
 				public void onPlayerJoined(Player invited) {
 					// Whatever happens to the invitation, we save the player for he to have a relation to the game
@@ -258,7 +286,7 @@ public class GameServiceImpl extends BaseServiceImpl<Game> implements GameServic
 //created with them already
 //					game.getUsers().add(user.getUsr());
 //					user.getUsr().getGames().add(game);
-					GameMessage payload = GameMessage.builder().type(GameMessage.TYPE_JOIN).modelId(game.getId().toString()).payload(sessionEmail).build();
+					GameMessage payload = GameMessage.builder().type(GameMessage.TYPE_JOIN).modelId(finalGame.getId().toString()).payload(sessionEmail).build();
 					HubMessage newMsg = null;
 					try {
 						newMsg = HubMessage.builder().from(sessionEmail).type(HubMessage.TYPE_MSG_GAME).payload(new ObjectMapper().writeValueAsString(payload)).build();
@@ -276,12 +304,12 @@ public class GameServiceImpl extends BaseServiceImpl<Game> implements GameServic
 					}
 					messageService.sendMessage(newMsg);
 				}
-				
+
 				@Override
 				public void onStartGame() {
-					game.setEstate(GameEstateEnum.STARTED);
+					finalGame.setEstate(GameEstateEnum.STARTED);
 				}
-				
+
 			});
 			gameController.joinPlayer(sessionEmail);
 			game.setSaveGame(gameController.getSerializedModel());
@@ -291,13 +319,15 @@ public class GameServiceImpl extends BaseServiceImpl<Game> implements GameServic
 		return game;
 	}
 
+	@Override
 	public void leaveGame(final String sessionEmail, final String id) {
-		final Game game = gameRepository.findOne(Long.valueOf(id));
-		if (game != null) {
+		final Optional<Game> optionalGame = gameRepository.findById(Long.valueOf(id));
+		if (optionalGame.isPresent()) {
+			Game game = optionalGame.get();
 			final GameController<?> gameController = GameControllerProvider.createController(game.getGameName());
 			gameController.loadModelFromSerialized(game.getSaveGame());
 			gameController.setGameControllerListener(new GameControllerListenerAdapter() {
-				
+
 				@Override
 				public void onPlayerLeft(Player found) {
 					super.onPlayerLeft(found);
@@ -324,13 +354,13 @@ public class GameServiceImpl extends BaseServiceImpl<Game> implements GameServic
 					}
 					messageService.sendMessage(newMsg);
 					game.setSaveGame(gameController.getSerializedModel());
-					if (gameRepository.exists(game.getId()) 
+					if (gameRepository.existsById(game.getId())
 							&& !GameEstateEnum.FINISHED.equals(game.getEstate())
 									&& !GameEstateEnum.INVALID.equals(game.getEstate())) {
 						gameRepository.save(game);
 					}
 				}
-				
+
 				@Override
 				public void onNeverReadyToStart() {
 					super.onNeverReadyToStart();
@@ -339,26 +369,26 @@ public class GameServiceImpl extends BaseServiceImpl<Game> implements GameServic
 					// We don´t need it, we delete it.
 					deleteGame(game);
 				}
-				
+
 			});
 			gameController.leavePlayer(sessionEmail);
 		}
 	}
-	
+
 	@Transactional
 	private void doStatisicsEndGame(HumanPlayer currentPlayer, boolean winner, boolean loser, boolean tie, Long gameId) {
 		if (winner) {
 			doStatisticsWin(
 					userService.findByEmail(currentPlayer.getEmail()),
-					gameRepository.findOne(gameId));
+					gameRepository.findById(gameId).get());
 		} else if (loser) {
 			doStatisticsLose(
 					userService.findByEmail(currentPlayer.getEmail()),
-					gameRepository.findOne(gameId));
+					gameRepository.findById(gameId).get());
 		} else if (tie) {
 			doStatisticsTie(
 					userService.findByEmail(currentPlayer.getEmail()),
-					gameRepository.findOne(gameId));
+					gameRepository.findById(gameId).get());
 		}
 	}
 

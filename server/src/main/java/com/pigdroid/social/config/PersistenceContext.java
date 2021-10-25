@@ -2,10 +2,10 @@ package com.pigdroid.social.config;
 
 import java.util.Properties;
 
-import javax.annotation.Resource;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -54,13 +54,13 @@ public class PersistenceContext {
     private static final String PROPERTY_NAME_HIBERNATE_NAMING_STRATEGY = "hibernate.ejb.naming_strategy";
     private static final String PROPERTY_NAME_HIBERNATE_SHOW_SQL = "hibernate.show_sql";
 
-    @Resource
+    @Autowired
     private Environment env;
 
     @Bean
     DataSource dataSource() {
         DataSource dataSource = null;
-        JndiTemplate jndi = new JndiTemplate();	
+        JndiTemplate jndi = new JndiTemplate();
         try {
             dataSource = (DataSource) jndi.lookup("java:comp/env/jdbc/MysqlDS");
         } catch (NamingException e) {
@@ -116,10 +116,10 @@ public class PersistenceContext {
     public MessageService getMessageService() {
     	return new MessageServiceImpl();
     }
-    
+
     @Bean
     public GameService getGameService() {
     	return new GameServiceImpl();
     }
-    
+
 }
